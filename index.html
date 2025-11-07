@@ -62,7 +62,7 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 .form-row{display:flex;gap:8px;flex-wrap:wrap}
 .form-group{display:flex;flex-direction:column;gap:6px;flex:1}
 .input,textarea{padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);outline:none}
-textarea{resize:vertical;min-height:80px}
+textarea{resize:vertical;min-height:80px,max-width: 80%;}
 .footer-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
 .bg-glow{position:fixed;left:50%;top:8%;width:520px;height:280px;border-radius:48%;transform:translateX(-50%);filter:blur(48px);opacity:0.12;background:radial-gradient(circle at 30% 30%,var(--accent),transparent 20%),radial-gradient(circle at 70% 70%,var(--main),transparent 30%);pointer-events:none;z-index:0}
 .sidebar-slide{position:fixed;inset:0;display:none;z-index:80}
@@ -208,11 +208,11 @@ textarea{resize:vertical;min-height:80px}
             <div class="form-row-1">
               <div class="form-group-1">
                 <label>الاسم الكامل</label>
-                <input type="text" id="custName" class="input" required>
+                <input type="text" id="custName" class="input" required="" style="max-width: 60%;"> 
               </div>
               <div class="form-group-1">
                 <label>رقم الهاتف</label>
-                <input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 " required>
+                <input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 " required="" style="max-width: 60%;">
               </div>
             </div>
             <div class="form-group"><label>العنوان الكامل</label><textarea id="custAddress" class="input" placeholder="مثال: المنصور بغداد" required></textarea></div>
@@ -471,35 +471,16 @@ document.getElementById('checkoutForm').addEventListener('submit', e=>{
   const phoneDigits=phone.replace(/\D/g,'')
   if(!/^07\d{9}$/.test(phoneDigits) && !/^7\d{9}$/.test(phoneDigits) && !/^9647\d{9}$/.test(phoneDigits)){alert('يرجى إدخال رقم هاتف عراقي صحيح');return}
   if(address.split(/\s+/).length<2){alert('يرجى كتابة عنوان لا يقل عن كلمتين');return}
-function generateOrderCode() {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  let code = ''
-  for (let i = 0; i < 5; i++) code += chars[Math.floor(Math.random() * chars.length)]
-  return '#+' + code
-}
-
-const orderCode = generateOrderCode()
-const total = order.reduce((s, o) => s + o.price * o.qty, 0).toLocaleString()
-
-let msgLines = ''
-msgLines += 'طلب جديد\n'
-msgLines += '====================\n'
-msgLines += `كود الطلب: ${orderCode}\n`
-msgLines += `الاسم الكريم: ${name}\n`
-msgLines += `رقم الهاتف: ${phone}\n`
-msgLines += `العنوان: ${address}\n`
-msgLines += `ملاحظة: ${note || '—'}\n`
-msgLines += '--------------------\n'
-msgLines += '🛒 تفاصيل الطلب:\n'
-
-msgLines += order.map(o => {
-  const itemTotal = (o.price * o.qty).toLocaleString()
-  return `• ${o.name} x${o.qty} - ${itemTotal} IQD`
-}).join('\n')
-
-msgLines += '\n--------------------\n'
-msgLines += `المجموع الكلي: ${total} IQD\n`
-msgLines += '===================='
+  let msgLines='طلب جديد\n\n'
+  msgLines+=`الاسم: ${name}\nالرقم: ${phone}\nالعنوان: ${address}\n\n`
+  msgLines+='الطلبات:\n'
+  msgLines+='الطبق | الكمية | السعر | المجموع | ملاحظة\n'
+  msgLines+=order.map(o=>{
+    const noteText=o.note?` ${o.note}`:''
+    return `${o.name} | ${o.qty} | ${o.price.toLocaleString()} IQD | ${(o.price*o.qty).toLocaleString()} IQD |${noteText}`
+  }).join('\n')
+  const total=order.reduce((s,o)=>s+o.price*o.qty,0).toLocaleString()
+  msgLines+=`\n\nالمجموع الكلي: ${total} IQD\n\nشكراً`
   const waNumber='+9647855321655'
   const waUrl=`https://wa.me/${waNumber.replace('+','')}?text=${encodeURIComponent(msgLines)}`
   window.open(waUrl,'_blank')
