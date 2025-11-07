@@ -472,15 +472,15 @@ document.getElementById('checkoutForm').addEventListener('submit', e=>{
   if(!/^07\d{9}$/.test(phoneDigits) && !/^7\d{9}$/.test(phoneDigits) && !/^9647\d{9}$/.test(phoneDigits)){alert('يرجى إدخال رقم هاتف عراقي صحيح');return}
   if(address.split(/\s+/).length<2){alert('يرجى كتابة عنوان لا يقل عن كلمتين');return}
   
-  let msgLines='طلب جديد\n====================\n'
-  msgLines+=`الاسم: ${name}\nالرقم: ${phone}\nالعنوان: ${address}\n--------------------\n`
+  let msgLines='طلب جديد\n=================================\n'
+  msgLines+=`الاسم: ${name}\nالرقم: ${phone}\nالعنوان: ${address}\n---------------------------------------------\n`
   msgLines+='الطبق والكمية - السعر - المجموع - ملاحظة\n'
   msgLines+=order.map(o=>{
   const noteText=o.note?` ${o.note}`:''
   return `${o.name} x${o.qty} - ${o.price.toLocaleString()} IQD - ${(o.price*o.qty).toLocaleString()} IQD - ${noteText}`
   }).join('\n')
   const total=order.reduce((s,o)=>s+o.price*o.qty,0).toLocaleString()
-  msgLines+=`\n--------------------\nالمجموع الكلي: ${total} IQD\n====================`
+  msgLines+=`\n---------------------------------------------\nالمجموع الكلي: ${total} IQD\n=================================`
   const waNumber='+9647855321655'
   const waUrl=`https://wa.me/${waNumber.replace('+','')}?text=${encodeURIComponent(msgLines)}`
   window.open(waUrl,'_blank')
