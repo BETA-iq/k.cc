@@ -260,7 +260,10 @@ const cartCountSide=document.getElementById('cartCountSide')
 const checkoutList=document.getElementById('checkoutList')
 const checkoutTotalEl=document.getElementById('checkoutTotal')
 const checkoutModal=document.getElementById('checkoutModal')
-const closeCheckout=document.getElementById('closeCheckout')
+const closeCheckout=document.getElementById('closeCheckout');
+if(closeCheckout){
+  closeCheckout.addEventListener('click', ()=>{ checkoutModal.classList.remove('open'); checkoutModal.setAttribute('aria-hidden','true') });
+}
 const cartBtn=document.getElementById('cartBtn')
 const cartBtnSide=document.getElementById('cartBtnSide')
 const openCheckoutFromSidebar=document.getElementById('openCheckoutFromSidebar')
@@ -428,7 +431,14 @@ document.addEventListener('click',e=>{ if(e.target===sidebarSlide){ closeSidebar
 document.getElementById('demoMood').addEventListener('click',()=>{
   document.body.animate([{background:varOr('--bg')},{background:'#faf5ff'},{background:varOr('--bg')}],{duration:1200})
   const all=document.querySelectorAll('.card .thumb')
-  all.forEach((t,i)=>t.animate([{transform:'rotate('+(i%2?4:-4)+'deg)'},{transform:'rotate(0)'}],{duration:700,delay:i*80}))
+    all.forEach((t,i)=>{
+      t.animate(
+        [{transform:'rotate('+(i%2?4:-4)+'deg)'},{transform:'rotate(0)'}],
+        {duration:700, delay:i*50}
+      );
+    });
+
+
 })
 function varOr(name){return getComputedStyle(document.documentElement).getPropertyValue(name) || '#fff'}
 function saveOrderToStorage(){ try{ localStorage.setItem('bf_order', JSON.stringify(order)) }catch(e){} }
