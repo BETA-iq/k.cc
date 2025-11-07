@@ -172,10 +172,14 @@ textarea{resize:vertical;min-height:80px}
   </div>
 </div>
 <div class="modal" id="checkoutModal" aria-hidden="true">
-  <div class="sheet" role="dialog" aria-modal="true" style="max-width:600px;margin:40px auto">
-    <div style="display:flex;gap:12px;flex-wrap:wrap">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <!--<h3 id="checkoutTitle">سلة الطلب وبيانات الوصول</h3>-->
+      <!--<button id="closeCheckout" class="btn-ghost">إغلاق</button>-->
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
       <div style="flex:1;min-width:260px">
-        <div id="checkoutList" style="max-height:320px;overflow:auto;padding:8px;border-radius:8px;border:1px solid rgba(15,23,42,0.04);background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.95))">
+        <div id="checkoutList" style="max-height:320px;overflow:auto;padding-right:6px;border-radius:8px;border:1px solid rgba(15,23,42,0.04);padding:8px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.95))">
           <p style="color:var(--muted);font-size:13px">السلة فارغة - أضف أطباقاً من اليمين</p>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
@@ -184,35 +188,36 @@ textarea{resize:vertical;min-height:80px}
         </div>
       </div>
       <div style="width:320px;min-width:260px">
+        <h4 style="margin:0 0 8px 0">معلومات المرسل</h4>
         <form id="checkoutForm">
-          <div class="form-row" style="display:flex;gap:12px;margin-bottom:8px">
-            <div style="flex:1;display:flex;flex-direction:column">
-              <label>الاسم الكامل</label>
-              <input type="text" id="custName" class="input" required>
-            </div>
-            <div style="flex:1;display:flex;flex-direction:column">
-              <label>رقم الهاتف</label>
-              <input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 أو +9647718009200" required>
-            </div>
+          <div class="form-row" style="flex-direction:column">
+            <div class="form-group"><label>الاسم الكامل</label><input type="text" id="custName" class="input" required></div>
+            <div class="form-group"><label>رقم الهاتف</label><input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 أو 7718009200 أو +9647718009200" required></div>
+            <div class="form-group"><label>العنوان الكامل</label><textarea id="custAddress" class="input" placeholder="مثال: المنصور بغداد" required></textarea></div>
+            <div class="form-group"><label>ملاحظة عامة للطلب (اختياري)</label><textarea id="orderNote" class="input" placeholder="مثال: لا تضع بصل"></textarea></div>
           </div>
-          <div class="form-group" style="margin-bottom:8px">
-            <label>العنوان الكامل</label>
-            <textarea id="custAddress" class="input" placeholder="مثال: المنصور بغداد" required></textarea>
-          </div>
-          <div class="form-group" style="margin-bottom:8px">
-            <label>ملاحظة عامة للطلب (اختياري)</label>
-            <textarea id="orderNote" class="input" placeholder="مثال: لا تضع بصل"></textarea>
-          </div>
-          <div class="footer-actions" style="margin-top:10px;display:flex;justify-content:flex-end;gap:8px">
+          <div class="footer-actions" style="margin-top:10px">
             <button type="button" class="btn-ghost" id="cancelCheckout">إلغاء</button>
-            <button type="submit" class="btn btn-primary">إرسال</button>
+            <button type="submit" class="btn btn-primary">send</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
+<div class="modal" id="noteModal" aria-hidden="true">
+  <div class="sheet" style="width:520px;max-width:96%">
+    <h3 id="noteTitle">ملاحظة الصنف</h3>
+    <div style="margin-top:8px">
+      <textarea id="noteInput" class="input" placeholder="أضف ملاحظة للصنف"></textarea>
+    </div>
+    <div class="footer-actions">
+      <button id="cancelNote" class="btn-ghost">إلغاء</button>
+      <button id="saveNote" class="btn btn-primary">حفظ</button>
+    </div>
+  </div>
+</div>
+    
 <div class="modal" id="noteModal" aria-hidden="true">
   <div class="sheet" style="width:520px;max-width:96%">
     <textarea id="noteInput" class="input" placeholder="أضف ملاحظة للصنف"></textarea>
@@ -260,10 +265,7 @@ const cartCountSide=document.getElementById('cartCountSide')
 const checkoutList=document.getElementById('checkoutList')
 const checkoutTotalEl=document.getElementById('checkoutTotal')
 const checkoutModal=document.getElementById('checkoutModal')
-const closeCheckout=document.getElementById('closeCheckout');
-if(closeCheckout){
-  closeCheckout.addEventListener('click', ()=>{ checkoutModal.classList.remove('open'); checkoutModal.setAttribute('aria-hidden','true') });
-}
+const closeCheckout=document.getElementById('closeCheckout')
 const cartBtn=document.getElementById('cartBtn')
 const cartBtnSide=document.getElementById('cartBtnSide')
 const openCheckoutFromSidebar=document.getElementById('openCheckoutFromSidebar')
@@ -431,27 +433,13 @@ document.addEventListener('click',e=>{ if(e.target===sidebarSlide){ closeSidebar
 document.getElementById('demoMood').addEventListener('click',()=>{
   document.body.animate([{background:varOr('--bg')},{background:'#faf5ff'},{background:varOr('--bg')}],{duration:1200})
   const all=document.querySelectorAll('.card .thumb')
-    all.forEach((t,i)=>{
-      t.animate(
-        [{transform:'...rotate('+(i%2?10:-10)+'deg) scale(1.05)},{transform:'rotate(0deg) scale(1)'}],{duration:800,delay:i*50,fill:'forwards'})  
-    })  
-})  
-
-function varOr(name, def){  
-  return getComputedStyle(document.documentElement).getPropertyValue(name) || def  
-}  
-
-function saveOrderToStorage(){  
-  localStorage.setItem('myOrder', JSON.stringify(order))  
-}  
-
-function loadOrderFromStorage(){  
-  const data=localStorage.getItem('myOrder')  
-  if(data){ order=JSON.parse(data); renderOrder() }  
-}  
-
-loadOrderFromStorage()  
-
+  all.forEach((t,i)=>t.animate([{transform:'rotate('+(i%2?4:-4)+'deg)'},{transform:'rotate(0)'}],{duration:700,delay:i*80}))
+})
+function varOr(name){return getComputedStyle(document.documentElement).getPropertyValue(name) || '#fff'}
+function saveOrderToStorage(){ try{ localStorage.setItem('bf_order', JSON.stringify(order)) }catch(e){} }
+function loadOrderFromStorage(){ try{ const d = JSON.parse(localStorage.getItem('bf_order')||'[]'); if(Array.isArray(d)) order=d; }catch(e){ order=[] } renderOrder() }
+window.addEventListener('beforeunload', saveOrderToStorage)
+loadOrderFromStorage()
 document.getElementById('checkoutForm').addEventListener('submit', e=>{
   e.preventDefault()
   const name=document.getElementById('custName').value.trim()
