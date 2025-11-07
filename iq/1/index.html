@@ -6,17 +6,17 @@
 <title>قائمة الطعام - بنفش بوتيك (سلة في الهيدر)</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{
-  --main:#6a0dad;
-  --accent:#8b5cf6;
-  --bg:#ffffff;
-  --text:#0f172a;
-  --muted:#9ca3af;
-  --glass-bg: rgba(255,255,255,0.45);
-  --card-radius:14px;
-  --shadow: 0 14px 40px rgba(16,24,40,0.06);
-  --glass-border: rgba(255,255,255,0.45);
-  --glass-blur: 10px;
+:root {
+    --main: #ef5f5f;
+    --accent: #9d0000;
+    --bg: #f9f9f9;
+    --text: rgba(255, 255, 255, 0.94);
+    --muted: #9d0000;
+    --glass-bg: rgb(239 239 239 / 45%);
+    --card-radius: 14px;
+    --shadow: 0 14px 40px rgba(16, 24, 40, 0.06);
+    --glass-border: rgb(245 29 29 / 45%);
+    --glass-blur: 10px;
 }
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-gradient(180deg,var(--bg),#fbf8ff);color:var(--text);-webkit-font-smoothing:antialiased}
@@ -117,12 +117,12 @@ textarea{resize:vertical;min-height:80px}
   <div class="brand">
     <div class="logo">ب</div>
     <div>
-      <h1>بنفش بوتيك</h1>
-      <div style="font-size:13px;color:var(--muted)">قائمة طعام تفاعلية</div>
+      <h1>ادريس - تست</h1>
+      <div style="font-size:13px;color:var(--muted)">مينيو طعام</div>
     </div>
   </div>
   <div class="controls">
-    <button class="menu-btn btn-primary" id="openSide">☰ قائمة</button>
+    <button class="menu-btn btn-primary" id="openSide">☰</button>
     <button id="cartBtn" class="cart-toggle" title="السلة">
       <span style="font-size:18px">🛒</span>
       <span id="cartCount" class="cart-badge">0</span>
@@ -135,7 +135,7 @@ textarea{resize:vertical;min-height:80px}
       <div class="logo">ب</div>
       <div>
         <h1>ادريس - اختبار</h1>
-        <div style="font-size:13px;color:var(--muted)">قائمة تفاعلية</div>
+        <div style="font-size:13px;color:var(--muted)">قائمة مينيو</div>
       </div>
     </div>
     <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
@@ -173,7 +173,10 @@ textarea{resize:vertical;min-height:80px}
 </div>
 <div class="modal" id="checkoutModal" aria-hidden="true">
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
-
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 id="checkoutTitle">سلة الطلب وبيانات الوصول</h3>
+      <button id="closeCheckout" class="btn-ghost">إغلاق</button>
+    </div>
     <div style="display:flex;gap:16px;flex-wrap:wrap">
       <div style="flex:1;min-width:260px">
         <div id="checkoutList" style="max-height:320px;overflow:auto;padding-right:6px;border-radius:8px;border:1px solid rgba(15,23,42,0.04);padding:8px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.95))">
@@ -195,7 +198,7 @@ textarea{resize:vertical;min-height:80px}
           </div>
           <div class="footer-actions" style="margin-top:10px">
             <button type="button" class="btn-ghost" id="cancelCheckout">إلغاء</button>
-            <button type="submit" class="btn btn-primary">إرسال الطلب إلى واتساب</button>
+            <button type="submit" class="btn btn-primary">send</button>
           </div>
         </form>
       </div>
