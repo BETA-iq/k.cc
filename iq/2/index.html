@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>تست ادريس</title>
+<title>حسن علي يونس</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -179,7 +179,6 @@ textarea {
     <div class="toolbar">
       <div class="search"><input id="search" placeholder="ابحث عن طبق أو مكوّن..." autocomplete="off" /></div>
       <div style="display:flex;gap:8px;align-items:center">
-        <button class="btn btn-primary" id="demoMood">تجربة بنفش</button>
       </div>
     </div>
     <section class="grid" id="grid" aria-live="polite"></section>
@@ -469,26 +468,18 @@ function loadOrderFromStorage(){ try{ const d = JSON.parse(localStorage.getItem(
 window.addEventListener('beforeunload', saveOrderToStorage)
 loadOrderFromStorage()
 document.getElementById('checkoutForm').addEventListener('submit', e=>{
-  e.preventDefault()
-  if(order.length===0){ alert('السلة فارغة!'); return }
-  const name = document.getElementById('custName').value.trim()
-  const phone = document.getElementById('custPhone').value.trim()
-  const address = document.getElementById('custAddress').value.trim()
-  const note = document.getElementById('orderNote').value.trim()
-  if(!name || !phone || !address){ alert('الرجاء تعبئة جميع الحقول المطلوبة'); return }
+e.preventDefault();const name=document.getElementById('custName').value.trim();
+const phone=document.getElementById('custPhone').value.trim();
+const address=document.getElementById('custAddress').value.trim();
+if(!name){alert('يرجى إدخال الاسم الكامل');return}
+const phoneDigits=phone.replace(/\D/g,'');if(!/^0?7\d{9}$/.test(phoneDigits) && !/^9647\d{9}$/.test(phoneDigits)){alert('يرجى إدخال رقم هاتف عراقي صحيح');return}
+if(address.split(/\s+/).length<2){alert('يرجى كتابة عنوان لا يقل عن كلمتين');return}
+let msgLines='طلب جديد\n\n';msgLines+=`الاسم: ${name}\nالرقم: ${phone}\nالعنوان: ${address}\n\n`;msgLines+='الطلبات:\n';msgLines+='الطبق | الكمية | السعر | المجموع\n';
+msgLines+=order.map(o=>{const notePart = o.note? ` (ملاحظة: ${o.note})` : '';return `${o.name}${notePart} | ${o.qty} | ${o.price.toLocaleString()} IQD | ${(o.price*o.qty).toLocaleString()} IQD`}).join('\n');
+const total=order.reduce((s,o)=>s+o.price*o.qty,0).toLocaleString();msgLines+=`\n\nالمجموع الكلي: ${total} IQD\n\nشكراً`;
+const waNumber='+9647855321655';const waUrl=`https://wa.me/${waNumber.replace('+','')}?text=${encodeURIComponent(msgLines)}`;window.open(waUrl,'_blank');
+document.getElementById('checkoutModal').classList.remove('open')})
 
-  let msg = `طلب جديد من ${name}%0Aرقم الهاتف: ${phone}%0Aالعنوان: ${address}%0A`
-  if(note) msg += `ملاحظة: ${note}%0A`
-  msg += `--------------------------------%0A`
-  order.forEach(o=>{ msg += `${o.name} x${o.qty} - ${(o.price*o.qty).toLocaleString()} IQD${o.note?` (ملاحظة: ${o.note})`:''}%0A` })
-  msg += `--------------------------------%0Aالمجموع الكلي: ${order.reduce((s,o)=>s+o.price*o.qty,0).toLocaleString()} IQD`
-
-  const whatsappUrl = `https://wa.me/?text=${msg}`
-  window.open(whatsappUrl,'_blank')
-  order=[]
-  renderOrder()
-  closeCheckoutModal()
-})
 document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ closeCheckoutModal(); noteModal.classList.remove('open'); noteModal.setAttribute('aria-hidden','true') } })
 document.addEventListener('click', (e)=>{
   if(checkoutModal.classList.contains('open') && e.target === checkoutModal){
