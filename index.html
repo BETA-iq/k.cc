@@ -40,7 +40,7 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 .order-item{display:flex;justify-content:space-between;gap:8px;padding:10px 6px;border-bottom:1px dashed rgba(15,23,42,0.04);align-items:center}
 .order-total{display:flex;justify-content:space-between;margin-top:12px;font-weight:800}
 .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;border:none;cursor:pointer}
-.btn-primary{background:linear-gradient(90deg,var(--accent),var(--main));color:#fff;box-shadow:0 12px 30px rgba(107,33,168,0.12);font-weight:700}
+.btn-primary{background:linear-gradient(137deg, var(--accent), #693939);color:#fff;box-shadow:0 12px 30px rgba(107,33,168,0.12);font-weight:700}
 .main{min-height:78vh;padding:20px;border-radius:var(--card-radius);background:linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,255,255,0.9));border:1px solid var(--glass-border);backdrop-filter: blur(var(--glass-blur));box-shadow:var(--shadow)}
 .toolbar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}
 .search{flex:1;display:flex;align-items:center;gap:8px}
@@ -54,7 +54,7 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 .price{position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.95);padding:6px 10px;border-radius:10px;font-weight:800;border:1px solid rgba(107,33,168,0.06)}
 .ribbon{position:absolute;right:-36px;top:12px;transform:rotate(45deg);background:linear-gradient(90deg,var(--accent),var(--main));color:#fff;padding:6px 46px;font-weight:800}
 .card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
-.btn-ghost{padding:8px 10px;border-radius:10px;border:1px dashed rgba(107,33,168,0.18);background:transparent}
+.btn-ghost{padding:8px 10px;border-radius:10px;/*border:1px dashed rgba(107,33,168,0.18);*/background:transparent}
 .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;visibility:hidden;opacity:0;transition:all .22s;z-index:60}
 .modal.open{visibility:visible;opacity:1}
 .sheet{width:720px;max-width:96%;background:#fff;border-radius:12px;padding:18px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 30px 60px rgba(16,24,40,0.08);transform:translateY(20px);transition:transform .22s}
@@ -136,7 +136,7 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
     </div>
   </div>
   <div class="controls">
-    <button class="menu-btn btn-primary" id="openSide">☰</button>
+    <button class="menu-btn btn-primary" id="openSide">☰ القائمه</button>
     <button id="cartBtn" class="cart-toggle" title="السلة">
       <span style="font-size:18px">🛒</span>
       <span id="cartCount" class="cart-badge">0</span>
