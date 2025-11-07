@@ -433,18 +433,25 @@ document.getElementById('demoMood').addEventListener('click',()=>{
   const all=document.querySelectorAll('.card .thumb')
     all.forEach((t,i)=>{
       t.animate(
-        [{transform:'rotate('+(i%2?4:-4)+'deg)'},{transform:'rotate(0)'}],
-        {duration:700, delay:i*50}
-      );
-    });
+        [{transform:'...rotate('+(i%2?10:-10)+'deg) scale(1.05)},{transform:'rotate(0deg) scale(1)'}],{duration:800,delay:i*50,fill:'forwards'})  
+    })  
+})  
 
+function varOr(name, def){  
+  return getComputedStyle(document.documentElement).getPropertyValue(name) || def  
+}  
 
-})
-function varOr(name){return getComputedStyle(document.documentElement).getPropertyValue(name) || '#fff'}
-function saveOrderToStorage(){ try{ localStorage.setItem('bf_order', JSON.stringify(order)) }catch(e){} }
-function loadOrderFromStorage(){ try{ const d = JSON.parse(localStorage.getItem('bf_order')||'[]'); if(Array.isArray(d)) order=d; }catch(e){ order=[] } renderOrder() }
-window.addEventListener('beforeunload', saveOrderToStorage)
-loadOrderFromStorage()
+function saveOrderToStorage(){  
+  localStorage.setItem('myOrder', JSON.stringify(order))  
+}  
+
+function loadOrderFromStorage(){  
+  const data=localStorage.getItem('myOrder')  
+  if(data){ order=JSON.parse(data); renderOrder() }  
+}  
+
+loadOrderFromStorage()  
+
 document.getElementById('checkoutForm').addEventListener('submit', e=>{
   e.preventDefault()
   const name=document.getElementById('custName').value.trim()
