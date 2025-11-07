@@ -471,16 +471,35 @@ document.getElementById('checkoutForm').addEventListener('submit', e=>{
   const phoneDigits=phone.replace(/\D/g,'')
   if(!/^07\d{9}$/.test(phoneDigits) && !/^7\d{9}$/.test(phoneDigits) && !/^9647\d{9}$/.test(phoneDigits)){alert('يرجى إدخال رقم هاتف عراقي صحيح');return}
   if(address.split(/\s+/).length<2){alert('يرجى كتابة عنوان لا يقل عن كلمتين');return}
-  let msgLines='طلب جديد\n\n'
-  msgLines+=`الاسم: ${name}\nالرقم: ${phone}\nالعنوان: ${address}\n\n`
-  msgLines+='الطلبات:\n'
-  msgLines+='الطبق | الكمية | السعر | المجموع | ملاحظة\n'
-  msgLines+=order.map(o=>{
-    const noteText=o.note?` ${o.note}`:''
-    return `${o.name} | ${o.qty} | ${o.price.toLocaleString()} IQD | ${(o.price*o.qty).toLocaleString()} IQD |${noteText}`
-  }).join('\n')
-  const total=order.reduce((s,o)=>s+o.price*o.qty,0).toLocaleString()
-  msgLines+=`\n\nالمجموع الكلي: ${total} IQD\n\nشكراً`
+function generateOrderCode() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+  let code = ''
+  for (let i = 0;i<5;i++)code+=chars[Math.floor(Math.random()*chars.length)]
+  return '#+'+code
+}
+
+const orderCode = generateOrderCode()
+const total=order.reduce((s,o)=>s+o.price*o.qty,0).toLocaleString()
+
+  let msgLines = ''
+    msgLines += 'طلب جديد\n'
+    msgLines += '====================\n'
+    msgLines += `كود الطلب: ${orderCode}\n`
+    msgLines += `الاسم الكريم: ${name}\n`
+    msgLines += `رقم الهاتف: ${phone}\n`
+    msgLines += `العنوان: ${address}\n`
+    msgLines += `ملاحظة: ${note || '—'}\n`
+    msgLines += '--------------------\n'
+    msgLines += '🛒 تفاصيل الطلب:\n'
+    
+    msgLines += order.map(o => {
+      const itemTotal = (o.price * o.qty).toLocaleString()
+      return `• ${o.name} x${o.qty} - ${itemTotal} IQD`
+    }).join('\n')
+    
+    msgLines += '\n--------------------\n'
+    msgLines += `المجموع الكلي: ${total} IQD\n`
+    msgLines += '===================='
   const waNumber='+9647855321655'
   const waUrl=`https://wa.me/${waNumber.replace('+','')}?text=${encodeURIComponent(msgLines)}`
   window.open(waUrl,'_blank')
