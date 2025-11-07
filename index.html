@@ -471,8 +471,11 @@ document.getElementById('checkoutForm').addEventListener('submit', e=>{
   const phoneDigits=phone.replace(/\D/g,'')
   if(!/^07\d{9}$/.test(phoneDigits) && !/^7\d{9}$/.test(phoneDigits) && !/^9647\d{9}$/.test(phoneDigits)){alert('يرجى إدخال رقم هاتف عراقي صحيح');return}
   if(address.split(/\s+/).length<2){alert('يرجى كتابة عنوان لا يقل عن كلمتين');return}
-  
-  let msgLines='طلب جديد\n=================================\n'
+  const pad=n=>n<10?'0'+n:n,
+  fmt=d=>{
+  const tz=new Date(d.toLocaleString('en-US',{timeZone:'Asia/Baghdad'}));
+  return `${String(tz.getFullYear()).slice(-2)}/${pad(tz.getMonth()+1)}/${pad(tz.getDate())} - ${pad(tz.getHours())}:${pad(tz.getMinutes())}:${pad(tz.getSeconds())}`;};
+  let msgLines=fmt(new Date())+'\n=================================\n'
   msgLines+=`الاسم: ${name}\nالرقم: ${phone}\nالعنوان: ${address}\n---------------------------------------------\n`
   msgLines+='الطبق والكمية - السعر - المجموع - ملاحظة\n'
   msgLines+=order.map(o=>{
