@@ -93,14 +93,14 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
 }
 
 .menu-item {
-  opacity: 0;                  /* العنصر مخفي بالأصل */
-  transform: translateY(20px); /* تحرك العنصر شوي للأسفل */
-  transition: all 0.5s ease-out; /* تعريف حركة الانيميشن */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
 }
 
 .menu-item.show {
-  opacity: 1;                   /* يظهر العنصر */
-  transform: translateY(0);     /* يرجع لمكانه الطبيعي */
+  opacity: 1;
+  transform: translateY(0);
 }
 
 @media (max-width: 480px) {
@@ -221,11 +221,11 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
             <div class="form-row-1">
               <div class="form-group-1">
                 <label>الاسم الكامل</label>
-                <input type="text" id="custName" class="input" required="" style="max-width: 60%;"> 
+                <input type="text" id="custName" class="input" required="" style="max-width: 140px;"> 
               </div>
               <div class="form-group-1">
                 <label>رقم الهاتف</label>
-                <input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 " required="" style="max-width: 60%;">
+                <input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 " required="" style="max-width: 140px;">
               </div>
             </div>
             <div class="form-group"><label>العنوان الكامل</label><textarea id="custAddress" class="input" placeholder="مثال: المنصور بغداد" required=""></textarea></div>
