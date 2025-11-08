@@ -99,11 +99,17 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
   background-size: cover;
   background-position: center;
   border-radius: 50%;
-}
+}/*
 @keyframes slideUpFade {
   0% {opacity: 0;transform: translateY(20px);}
   100% {opacity: 1;transform: translateY(0);}
+}*/
+@keyframes slideUpFade {
+  0% {opacity: 0; transform: translateY(20px);}
+  60% {opacity: 1; transform: translateY(-5px);}
+  100% {opacity: 1; transform: translateY(0);}
 }
+
 @media (max-width: 480px) {
   .cart-modal,
   .cart-modal .modal-content {
