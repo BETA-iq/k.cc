@@ -118,7 +118,33 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
   opacity: 1;
   transform: translateY(0);
 }
-
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95) rotateX(8deg);
+    filter: blur(4px);
+  }
+  25% {
+    opacity: 0.5;
+    transform: translateY(25px) scale(0.97) rotateX(4deg);
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(10px) scale(1.02) rotateX(0deg);
+    filter: blur(1px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
 @media (max-width: 480px) {
   .cart-modal,
   .cart-modal .modal-content {
