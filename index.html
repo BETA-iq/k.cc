@@ -28,7 +28,14 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 .controls{display:flex;gap:8px;align-items:center}
 .menu-btn{display:none;padding:8px 12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),var(--main));color:#fff;font-weight:700}
 .container{display:contents}
-.sidebar{background:linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,255,255,0.9));border-radius:var(--card-radius);padding:18px;backdrop-filter: blur(var(--glass-blur));border:1px solid var(--glass-border);box-shadow:var(--shadow)}
+.sidebar {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgb(145 0 0 / 90%));
+    border-radius: var(--card-radius);
+    padding: 18px;
+    backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--shadow);
+}
 .brand-compact{display:flex;align-items:center;gap:12px;margin-bottom:10px}
 .categories {
   display: flex;
@@ -109,7 +116,15 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 .order-total{display:flex;justify-content:space-between;margin-top:12px;font-weight:800}
 .btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;border:none;cursor:pointer}
 .btn-primary{background:linear-gradient(137deg, var(--accent), #693939);color:#fff;box-shadow:0 12px 30px rgba(107,33,168,0.12);font-weight:700}
-.main{min-height:78vh;padding:20px;border-radius:var(--card-radius);background:linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,255,255,0.9));border:1px solid var(--glass-border);backdrop-filter: blur(var(--glass-blur));box-shadow:var(--shadow)}
+.main {
+    min-height: 78vh;
+    padding: 20px;
+    border-radius: var(--card-radius);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.94), rgb(69 1 1 / 90%));
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(var(--glass-blur));
+    box-shadow: var(--shadow);
+}
 .toolbar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}
 .search{flex:1;display:flex;align-items:center;gap:8px}
 .search input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(15,23,42,0.06);outline:none}
