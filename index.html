@@ -10,7 +10,7 @@
     --main: #ef5f5f;
     --accent: #9d0000;
     --bg: #3b0b0b;
-    --text: rgb(255 255 255 / 94%)
+    --text: #fff
     --muted: #9d0000;
     --glass-bg: rgb(26 26 26 / 45%);
     --card-radius: 14px;
@@ -64,7 +64,7 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
   right: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(270deg, rgba(255,255,255,0.9) 0%, transparent 100%);
+  background: linear-gradient(270deg, rgba(--text) 0%, transparent 100%);
   transform: translateX(100%);
   animation: typingShine 1.2s ease forwards;
   animation-delay: inherit;
@@ -110,7 +110,7 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 
 .cat{padding:12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border:1px solid transparent;transition:all .18s}
 .cat:hover{transform:translateX(-6px)}
-.cat.active{background:linear-gradient(90deg,rgba(139,92,246,0.12),rgba(139,92,246,0.06));border-color:rgba(139,92,246,0.18)}
+.cat.active{background:linear-gradient(90deg,rgba(139,92,246,0.12),rgba(139,92,246,0.06));border-color:rgb(189 189 189 / 18%)}
 .order{margin-top:16px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.82));border:1px solid var(--glass-border)}
 .order h3{margin:0 0 10px 0}
 .items{max-height:199px;overflow:auto;padding-right:6px}
