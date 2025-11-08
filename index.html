@@ -10,7 +10,7 @@
     --main: #ef5f5f;
     --accent: #9d0000;
     --bg: #3b0b0b;
-    --text: rgb(73 59 59 / 94%);
+    --text: rgb(255 255 255 / 94%)
     --muted: #9d0000;
     --glass-bg: rgb(26 26 26 / 45%);
     --card-radius: 14px;
@@ -133,7 +133,13 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
 .card{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;border-radius:12px;padding:14px;background:linear-gradient(180deg,rgba(144 46 46 / 32%),rgba(22 15 15 / 94%));border:1px solid rgba(0,0,0,0.04);box-shadow:0 10px 30px rgba(16,24,40,0.04);position:relative;overflow:hidden;cursor:pointer;transition:transform .22s,box-shadow .22s}
 .card:hover{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;transform:translateY(-8px);box-shadow:0 26px 46px rgba(107,33,168,0.08)}
-.thumb{width:100%;height:140px;border-radius:10px;background:linear-gradient(120deg,rgba(139,92,246,0.06),rgba(139,92,246,0.02));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--main);font-size:16px}
+.thumb{
+    width:100%;height:140px;border-radius:10px;
+    background:linear-gradient(120deg,rgba(139,92,246,0.06),rgba(139,92,246,0.02));
+    display:flex;align-items:center;
+    justify-content:center;
+    font-weight:800;color:var(#f7f4f4);
+    font-size:16px}
 .card h4{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;margin:10px 0 6px 0}
 .card p{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;margin:0;color:var(--muted);font-size:13px}
 .price{position:absolute;top:12px;left:12px;background:rgba(22 15 15 / 94%);padding:6px 10px;border-radius:10px;font-weight:800;border:1px solid rgba(107,33,168,0.06)}
@@ -151,7 +157,12 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 }
 
 
-.btn-ghost{padding:8px 10px;border-radius:10px;/*border:1px dashed rgba(107,33,168,0.18);*/background:transparent}
+.btn-ghost {
+    padding: 8px 10px;
+    border-radius: 10px;
+    border: 1px dashed rgb(30 24 24 / 30%);
+    background: #6d212173;
+}
 .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;visibility:hidden;opacity:0;transition:all .22s;z-index:60}
 .modal.open{visibility:visible;opacity:1}
 .sheet{width:720px;max-width:96%;background:#fff;border-radius:12px;padding:18px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 30px 60px rgba(16,24,40,0.08);transform:translateY(20px);transition:transform .22s}
@@ -325,7 +336,7 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
   </div>
   <main class="main" role="main">
     <div class="toolbar">
-      <div class="search"><input id="search" placeholder="ابحث عن طبق أو مكوّن..." /></div>
+      <div class="search"><input id="search" placeholder="ابحث عن طبق أو مكوّن..."style="background: #312626;" /></div>
       <div style="display:flex;gap:8px;align-items:center">
         <button class="btn btn-primary" id="demoMood">ادريس</button>
       </div>
