@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>تست مطاعم</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+    --main: #ef5f5f;
+    --accent: #9d0000;
+    --bg: #3b0b0b;
+    --text: rgb(73 59 59 / 94%);
+    --muted: #9d0000;
+    --glass-bg: rgb(26 26 26 / 45%);
+    --card-radius: 14px;
+    --shadow: 0 14px 40px rgba(16, 24, 40, 0.06);
+    --glass-border: rgb(157 91 91 / 45%);
+    --glass-blur: 10px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-gradient(180deg,var(--bg),#fbf8ff);color:var(--text);-webkit-font-smoothing:antialiased}
+.app{max-width:1200px;margin:28px auto;padding:18px;display:grid;grid-template-columns:360px 1fr;gap:22px;align-items:start}
+.header{display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.85));border:1px solid rgba(0,0,0,0.04);box-shadow:var(--shadow)}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:87px;height:62px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--main));display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:22px}
+.brand h1{margin:0;font-size:18px}
+.controls{display:flex;gap:8px;align-items:center}
+.menu-btn{display:none;padding:8px 12px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--accent),var(--main));color:#fff;font-weight:700}
+.container{display:contents}
+.sidebar{background:linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,255,255,0.9));border-radius:var(--card-radius);padding:18px;backdrop-filter: blur(var(--glass-blur));border:1px solid var(--glass-border);box-shadow:var(--shadow)}
+.brand-compact{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.categories{display:flex;flex-direction:column;gap:8px;margin-top:10px}
+.cat{padding:12px;border-radius:10px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;border:1px solid transparent;transition:all .18s}
+.cat:hover{transform:translateX(-6px)}
+.cat.active{background:linear-gradient(90deg,rgba(139,92,246,0.12),rgba(139,92,246,0.06));border-color:rgba(139,92,246,0.18)}
+.order{margin-top:16px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.82));border:1px solid var(--glass-border)}
+.order h3{margin:0 0 10px 0}
+.items{max-height:199px;overflow:auto;padding-right:6px}
+.order-item{display:flex;justify-content:space-between;gap:8px;padding:10px 6px;border-bottom:1px dashed rgba(15,23,42,0.04);align-items:center}
+.order-total{display:flex;justify-content:space-between;margin-top:12px;font-weight:800}
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;border:none;cursor:pointer}
+.btn-primary{background:linear-gradient(137deg, var(--accent), #693939);color:#fff;box-shadow:0 12px 30px rgba(107,33,168,0.12);font-weight:700}
+.main{min-height:78vh;padding:20px;border-radius:var(--card-radius);background:linear-gradient(180deg,rgba(255,255,255,0.94),rgba(255,255,255,0.9));border:1px solid var(--glass-border);backdrop-filter: blur(var(--glass-blur));box-shadow:var(--shadow)}
+.toolbar{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:center;margin-bottom:18px}
+.search{flex:1;display:flex;align-items:center;gap:8px}
+.search input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(15,23,42,0.06);outline:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.card{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;border-radius:12px;padding:14px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 10px 30px rgba(16,24,40,0.04);position:relative;overflow:hidden;cursor:pointer;transition:transform .22s,box-shadow .22s}
+.card:hover{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;transform:translateY(-8px);box-shadow:0 26px 46px rgba(107,33,168,0.08)}
+.thumb{
+    width:100%;height:140px;border-radius:10px;
+    background:linear-gradient(120deg,rgba(139,92,246,0.06),rgba(139,92,246,0.02));
+    display:flex;align-items:center;
+    justify-content:center;
+    font-weight:800;color:var(#f7f4f4);
+    font-size:16px}
+.card h4{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;margin:10px 0 6px 0}
+.card p{animation-delay: var(--delay, 0s);opacity: 0;animation: slideUpFade 0.5s forwards;margin:0;color:var(--muted);font-size:13px}
+.price{position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.95);padding:6px 10px;border-radius:10px;font-weight:800;border:1px solid rgba(107,33,168,0.06)}
+.ribbon{position:absolute;right:-36px;top:12px;transform:rotate(45deg);background:linear-gradient(90deg,var(--accent),var(--main));color:#fff;padding:6px 46px;font-weight:800}
+/*.card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px}*/
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  opacity: 0;
+  animation: slideUpFade 0.5s forwards;
+  transform-origin: bottom;
+}
+
+.btn-ghost{padding:8px 10px;border-radius:10px;/*border:1px dashed rgba(107,33,168,0.18);*/background:transparent}
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;visibility:hidden;opacity:0;transition:all .22s;z-index:60}
+.modal.open{visibility:visible;opacity:1}
+.sheet{width:720px;max-width:96%;background:#fff;border-radius:12px;padding:18px;border:1px solid rgba(0,0,0,0.04);box-shadow:0 30px 60px rgba(16,24,40,0.08);transform:translateY(20px);transition:transform .22s}
+.modal.open .sheet{transform:translateY(0)}
+.form-row{display:flex;gap:8px;flex-wrap:wrap}
+.form-group{display:flex;flex-direction:column;gap:6px;flex:1}
+.input,textarea{padding:10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);outline:none}
+textarea{resize:vertical;min-height:80px,max-width: 80%;}
+.footer-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+.bg-glow{position:fixed;left:50%;top:8%;width:520px;height:280px;border-radius:48%;transform:translateX(-50%);filter:blur(48px);opacity:0.12;background:radial-gradient(circle at 30% 30%,var(--accent),transparent 20%),radial-gradient(circle at 70% 70%,var(--main),transparent 30%);pointer-events:none;z-index:0}
+.sidebar-slide{position:fixed;inset:0;display:none;z-index:80}
+.sidebar-panel{position:fixed;right:0;top:0;height:100%;width:320px;background:linear-gradient(180deg,rgba(255,255,255,0.96),rgba(255,255,255,0.92));box-shadow: -20px 0 40px rgba(16,24,40,0.12);padding:18px;transform:translateX(100%);transition:transform .28s}
+.sidebar-panel.open{transform:translateX(0)}
+.close-side{display:flex;justify-content:flex-end}
+.cart-item-controls{display:flex;gap:6px;align-items:center}
+.qty-input{width:62px;padding:6px;border-radius:8px;border:1px solid rgba(15,23,42,0.06);text-align:center}
+.note-btn{background:transparent;border:1px dashed rgba(107,33,168,0.12);padding:6px 8px;border-radius:8px;font-size:13px}
+.remove-btn{background:transparent;border:1px solid rgba(220,38,38,0.08);padding:6px 8px;border-radius:8px;color:#b91c1c}
+.cart-toggle{padding:8px 10px;border-radius:10px;border:1px solid rgba(15,23,42,0.06);cursor:pointer;display:flex;align-items:center;gap:8px;background:transparent}
+.cart-badge{background:#ff4d6d;color:#fff;border-radius:50%;min-width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;font-weight:800;padding:0 6px;font-size:13px}
+.dark{--bg:#0f1724;--text:#f3f4f6;--muted:#9aa6b2;--glass-bg: rgba(255,255,255,0.03);--glass-border: rgba(255,255,255,0.06)}
+.form-row-1 {
+  display: flex;
+  gap: 5px;
+}
+.form-group-1 {
+  flex: 1;
+  max-width: 80%;
+}
+.logo-1 {
+  width: 80px;height: 80px;
+  background-image: url('https://cdn.discordapp.com/attachments/1436276906772271146/1436321597102489711/aboud.rest_14040817_144858815.jpg');
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+
+.menu-item {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
+}
+
+.menu-item.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+@keyframes slideUpFade {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.95) rotateX(8deg);
+    filter: blur(4px);
+  }
+  25% {
+    opacity: 0.5;
+    transform: translateY(25px) scale(0.97) rotateX(4deg);
+    filter: blur(2px);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateY(10px) scale(1.02) rotateX(0deg);
+    filter: blur(1px);
+  }
+  70% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1);
+    filter: blur(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+@media (max-width: 480px) {
+  .cart-modal,
+  .cart-modal .modal-content {
+    width: 95% !important;
+    max-width: 380px;
+    max-height: 90vh;
+    padding: 10px 15px;
+    border-radius: 12px;
+  }
+  .cart-items {
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+  .checkout-form input,
+  .checkout-form button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .cart-header h2 {
+    font-size: 18px;
+  }
+}
+
+@media(max-width:900px){
+  .app{margin:12px auto;padding:8px;grid-template-columns:1fr}
+  .header{display:flex;margin-bottom:12px}
+  .sidebar{display:none}
+  .menu-btn{display:inline-block}
+  .sidebar-slide{display:block}
+  .sheet{width:96%}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+}
+</style>
+</head>
+<body>
+<div class="bg-glow" aria-hidden></div>
+<div class="header" aria-hidden>
+  <div class="brand">
+    <div class="logo">تيست</div>
+    <div>
+      <h1>ادريس - تست</h1>
+      <div style="font-size:13px;color:var(--muted)">مينيو طعام</div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="menu-btn btn-primary" id="openSide">☰ القائمه</button>
+    <button id="cartBtn" class="cart-toggle" title="السلة">
+      <span style="font-size:18px">🛒</span>
+      <span id="cartCount" class="cart-badge">0</span>
+    </button>
+  </div>
+</div>
+<div class="app">
+  <div class="sidebar" id="desktopSidebar">
+    <div class="brand-compact">
+      <div class="logo">تيست</div>
+
+      <div>
+        <h1>ادريس - اختبار</h1>
+        <div style="font-size:13px;color:var(--muted)">قائمة مينيو</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;justify-content:space-between">
+      <div style="font-weight:700">الأقسام</div>
+      <div>
+        <button id="cartBtnSide" class="cart-toggle">🛒 <span id="cartCountSide" class="cart-badge">0</span></button>
+      </div>
+    </div>
+    <div class="categories" id="cats"></div>
+    <div class="order" aria-live="polite">
+      <h3>سلة الطلب (عرض سريع)</h3>
+      <div class="items" id="orderItems"><p style="color:var(--muted);font-size:13px">السلة فارغة - أضف أطباقاً من اليمين</p></div>
+      <div class="order-total"><span>المجموع</span><span id="total">0 IQD</span></div>
+      <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
+        <button class="btn btn-primary" id="openCheckoutFromSidebar">فتح السلة والطلب</button>
+      </div>
+    </div>
+  </div>
+  <main class="main" role="main">
+    <div class="toolbar">
+      <div class="search"><input id="search" placeholder="ابحث عن طبق أو مكوّن..." /></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-primary" id="demoMood">ادريس</button>
+      </div>
+    </div>
+    <section class="grid" id="grid"></section>
+  </main>
+</div>
+<div class="sidebar-slide" id="sidebarSlide">
+  <div class="sidebar-panel" id="panel">
+    <div class="close-side"><button class="btn btn-ghost" id="closeSide">إغلاق ✕</button></div>
+    <h3 style="margin-top:6px">الأقسام</h3>
+    <div class="categories" id="catsMobile" style="margin-top:8px"></div>
+  </div>
+</div>
+<div class="modal" id="checkoutModal" aria-hidden="true">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <<h3 id="checkoutTitle">سلة الطلبات</h3>
+      <button id="closeCheckout" class="btn-ghost">إغلاق</button>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap">
+      <div style="flex:1;min-width:260px">
+        <div id="checkoutList" style="max-height:199px;overflow:auto;padding-right:6px;border-radius:8px;border:1px solid rgba(15,23,42,0.04);padding:8px;background:linear-gradient(180deg,rgba(255,255,255,0.98),rgba(255,255,255,0.95))">
+          <p style="color:var(--muted);font-size:13px">السلة فارغة - أضف أطباقاً من اليمين</p>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+          <strong>المجموع الكلي</strong>
+          <strong id="checkoutTotal">0 IQD</strong>
+        </div>
+      </div>
+      <div style="width:320px;min-width:260px">
+        <form id="checkoutForm">
+          <div class="form-row" style="flex-direction:column">
+            <div class="form-row-1">
+              <div class="form-group-1">
+                <label>الاسم الكامل</label>
+                <input type="text" id="custName" class="input" required="" style="max-width: 140px;"> 
+              </div>
+              <div class="form-group-1">
+                <label>رقم الهاتف</label>
+                <input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 " required="" style="max-width: 140px;">
+              </div>
+            </div>
+            <div class="form-group"><label>العنوان الكامل</label><textarea id="custAddress" class="input" placeholder="مثال: المنصور بغداد" required=""></textarea></div>
+            <div class="form-group"><label>ملاحظة عامة للطلب (اختياري)</label><textarea id="orderNote" class="input" placeholder="مثال: لا تضع بصل"></textarea></div>
+          </div>
+          <div class="footer-actions" style="margin-top:10px">
+            <button type="button" class="btn-ghost" id="cancelCheckout">إلغاء</button>
+            <button type="submit" class="btn btn-primary">send</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" id="noteModal" aria-hidden="true">
+  <div class="sheet" style="width:520px;max-width:96%">
+    <h3 id="noteTitle">ملاحظة الصنف</h3>
+    <div style="margin-top:8px">
+      <textarea id="noteInput" class="input" placeholder="أضف ملاحظة للصنف"></textarea>
+    </div>
+    <div class="footer-actions">
+      <button id="cancelNote" class="btn-ghost">إلغاء</button>
+      <button id="saveNote" class="btn btn-primary">حفظ</button>
+    </div>
+  </div>
+</div>
+    
+<div class="modal" id="noteModal" aria-hidden="true">
+  <div class="sheet" style="width:520px;max-width:96%">
+    <textarea id="noteInput" class="input" placeholder="أضف ملاحظة للصنف"></textarea>
+    <div class="footer-actions" style="margin-top:8px;display:flex;justify-content:flex-end;gap:8px">
+      <button id="cancelNote" class="btn-ghost">إلغاء</button>
+      <button id="saveNote" class="btn btn-primary">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  categories: [
+    'العروض',
+    'الهواتف',
+    'اكسسوارات الهاتف',
+    'كفرات وحمايه',
+    'شواحن',
+    'ساعات'
+  ],
+  products: [
+    { id: 1, name: 'عرض هاتف + كفر + سماعة', cat: 'العروض', desc: 'حزمة توفير شاملة بسعر مميز', price: 980000, tag: 'عرض محدود' },
+    { id: 2, name: 'عرض شاحن + كابل سريع', cat: 'العروض', desc: 'شحن سريع مع كابل USB-C', price: 35000, tag: 'عرض' },
+    { id: 3, name: 'عرض سماعة + كفر', cat: 'العروض', desc: 'سماعة عالية الجودة مع كفر حماية', price: 50000, tag: 'مميز' },
+
+    { id: 4, name: 'iPhone 16 pro max', cat: 'الهواتف', desc: 'شاشة Super Retina XDR، كاميرا ثلاثية، أداء عالي', price: 1350000, tag: 'الأكثر طلباً' },
+    { id: 5, name: 'Samsung Galaxy S24 Ultra', cat: 'الهواتف', desc: 'كاميرا 200 ميجابيكسل، دعم قلم S-Pen', price: 1250000, tag: 'جديد' },
+    { id: 6, name: 'Redmi Note 13 Pro', cat: 'الهواتف', desc: 'أداء ممتاز وسعر اقتصادي', price: 480000, tag: 'اقتصادي' },
+
+    { id: 7, name: 'حامل جوال مغناطيسي', cat: 'اكسسوارات الهاتف', desc: 'دوران 360°، تثبيت قوي، تصميم أنيق', price: 18000, tag: 'عملي' },
+    { id: 8, name: 'منظف شاشة ذكي', cat: 'اكسسوارات الهاتف', desc: 'بخاخ تنظيف مدمج مع قطعة قماش', price: 7000, tag: 'مفيد' },
+    { id: 9, name: 'سماعة بلوتوث صغيرة', cat: 'اكسسوارات الهاتف', desc: 'صوت نقي وراحة أثناء الاستخدام', price: 45000, tag: 'مميز' },
+
+    { id: 10, name: 'كفر حماية شفاف iPhone 16 pro max', cat: 'كفرات وحمايه', desc: 'مضاد للصدمات، خامة TPU شفافة', price: 15000, tag: 'الأكثر مبيعاً' },
+    { id: 11, name: 'كفر سيليكون Galaxy S24', cat: 'كفرات وحمايه', desc: 'ملمس ناعم، حماية كاملة للجهاز', price: 12000, tag: 'جديد' },
+    { id: 12, name: 'زجاج حماية 9H', cat: 'كفرات وحمايه', desc: 'مضاد للخدوش، شفاف بالكامل', price: 8000, tag: 'أساسي' },
+
+    { id: 13, name: 'شاحن سريع 25 واط سامسونج', cat: 'شواحن', desc: 'يدعم الشحن السريع PD، كيبل Type-C', price: 25000, tag: 'سريع' },
+    { id: 14, name: 'كيبل شحن Type-C أصلي', cat: 'شواحن', desc: 'طول 1 متر، جودة عالية، متين', price: 9000, tag: 'مضمون' },
+    { id: 15, name: 'باور بانك 20000mAh من Anker', cat: 'شواحن', desc: 'شحن سريع PD، مدخلين USB-C', price: 39000, tag: 'مضمون' },
+
+    { id: 16, name: 'Apple Watch Series 11', cat: 'ساعات', desc: 'شاشة Always-On Retina، تتبع صحي متكامل', price: 490000, tag: 'راقي' },
+    { id: 17, name: 'Galaxy Watch 6 Classic', cat: 'ساعات', desc: 'تصميم معدني أنيق، بطارية تدوم طويلاً', price: 420000, tag: 'فاخر' },
+    { id: 18, name: 'ساعة ذكية Amazfit GTS 4', cat: 'ساعات', desc: 'متابعة النوم والرياضة، مقاومة للماء', price: 130000, tag: 'مميز' }
+  ]
+}
+
+let order=[]
+const catsEl=document.getElementById('cats')
+const catsMobileEl=document.getElementById('catsMobile')
+const grid=document.getElementById('grid')
+const orderItemsContainer=document.getElementById('orderItems')
+const cartCount=document.getElementById('cartCount')
+const cartCountSide=document.getElementById('cartCountSide')
+const checkoutList=document.getElementById('checkoutList')
+const checkoutTotalEl=document.getElementById('checkoutTotal')
+const checkoutModal=document.getElementById('checkoutModal')
+const closeCheckout=document.getElementById('closeCheckout')
+const cartBtn=document.getElementById('cartBtn')
+const cartBtnSide=document.getElementById('cartBtnSide')
+const openCheckoutFromSidebar=document.getElementById('openCheckoutFromSidebar')
+const noteModal=document.getElementById('noteModal')
+const noteInput=document.getElementById('noteInput')
+const noteTitle=document.getElementById('noteTitle')
+let noteTargetId=null
+
+DATA.categories.forEach((c,i)=>{
+  const el=document.createElement('div')
+  el.className='cat'+(i===0?' active':'')
+  el.innerHTML=`<span>${c}</span><span style='opacity:.6;font-size:12px'>${DATA.dishes.filter(d=>d.cat===c).length}</span>`
+  el.onclick=()=>{document.querySelectorAll('#cats .cat').forEach(x=>x.classList.remove('active'));el.classList.add('active');renderGrid(c);closeSidebar()}
+  catsEl.appendChild(el)
+  const el2=el.cloneNode(true)
+  el2.onclick=()=>{document.querySelectorAll('#catsMobile .cat').forEach(x=>x.classList.remove('active'));el2.classList.add('active');renderGrid(c);closeSidebar()}
+  catsMobileEl.appendChild(el2)
+})
+function renderGrid(filter){
+  grid.innerHTML=''
+  const items=DATA.dishes.filter(d=>!filter||d.cat===filter)
+  items.forEach(d=>{
+    const card=document.createElement('article')
+    card.className='card'
+    card.setAttribute('data-id',d.id)
+    card.innerHTML=`
+      <div class="price">${d.price.toLocaleString()} IQD</div>
+      <div class="thumb">${d.name.split(' ').slice(0,3).join(' ')}</div>
+      <h4>${d.name}</h4>
+      <p>${d.desc}</p>
+      <div class='card-actions'><small style='color:var(--muted)'>${d.tag}</small>
+        <div>
+          <button class='btn-ghost' onclick='openModal(${d.id}, event)'>عرض</button>
+          <button class='btn-ghost' onclick='addToOrder(${d.id}, event)'>أضف</button>
+        </div>
+      </div>
+      <div class='ribbon' style='display:${d.tag?"block":"none"}'>${d.tag}</div>`
+    grid.appendChild(card)
+  })
+}
+renderGrid(DATA.categories[0])
+document.getElementById('search').addEventListener('input',e=>{
+  const q=e.target.value.trim()
+  if(!q) return renderGrid(document.querySelector('#cats .cat.active').innerText)
+  grid.innerHTML=''
+  const res=DATA.dishes.filter(d=>(d.name + ' ' + d.desc).toLowerCase().includes(q.toLowerCase()))
+  res.forEach(d=>{
+    const card=document.createElement('article');card.className='card'
+    card.innerHTML=`<div class="price">${d.price.toLocaleString()} IQD</div><div class="thumb">${d.name.split(' ').slice(0,3).join(' ')}</div><h4>${d.name}</h4><p>${d.desc}</p><div class='card-actions'><small style='color:var(--muted)'>${d.tag}</small><div><button class='btn-ghost' onclick='openModal(${d.id}, event)'>عرض</button> <button class='btn-ghost' onclick='addToOrder(${d.id}, event)'>أضف</button></div></div><div class='ribbon'>${d.tag}</div>`
+    grid.appendChild(card)
+  })
+})
+const modal=document.getElementById('modal')
+let currentModalId=null
+function openModal(id,e){ if(e) e.stopPropagation(); const dish=DATA.dishes.find(x=>x.id===id); currentModalId=id; 
+  const html = `
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+      <div style="width:140px;height:120px;border-radius:10px;background:linear-gradient(120deg,rgba(139,92,246,0.06),rgba(139,92,246,0.02));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--main)">
+        ${dish.name.split(' ').slice(0,3).join(' ')}
+      </div>
+      <div style="flex:1">
+        <p style="margin:0 0 6px 0;color:var(--muted)">${dish.desc}</p>
+        <p style="margin:0;font-weight:800">السعر: ${dish.price.toLocaleString()} IQD</p>
+        <p style="margin:8px 0 0 0;font-size:13px;color:var(--muted)">اضغط "أضف" لإضافته مباشرة للسلة</p>
+      </div>
+    </div>`
+  if(confirm(`${dish.name}\n\n${dish.desc}\n\nالسعر: ${dish.price.toLocaleString()} IQD\n\nهل تود إضافة هذا الطبق للسلة؟`)){
+    addToOrder(id)
+  }
+}
+function addToOrder(id,e){
+  if(e) e.stopPropagation()
+  const dish=DATA.dishes.find(x=>x.id===id)
+  const existing=order.find(o=>o.id===id)
+  if(existing){ existing.qty++ } else { order.push({id:dish.id,name:dish.name,price:dish.price,qty:1,note:''}) }
+  renderOrder()
+  animateCard(id)
+}
+function animateCard(id){
+  const card=document.querySelector(`.card[data-id='${id}']`)
+  if(card){ card.animate([{transform:'scale(1)'},{transform:'scale(1.04)'},{transform:'scale(1)'}],{duration:260}) }
+}
+function renderOrder(){
+  const container=orderItemsContainer
+  container.innerHTML=''
+  if(order.length===0){
+    container.innerHTML=`<p style="color:var(--muted);font-size:13px">السلة فارغة - أضف أطباقاً من اليمين</p>`
+    document.getElementById('total').innerText='0 IQD'
+  } else {
+    let total=0
+    order.forEach(o=>{
+      total+=o.price*o.qty
+      const el=document.createElement('div'); el.className='order-item'
+      el.innerHTML=`<div style="display:flex;flex-direction:column"><strong>${o.name}</strong><div style="font-size:13px;color:var(--muted)">x${o.qty}</div></div><div style="text-align:left;min-width:120px"><div>${(o.price*o.qty).toLocaleString()} IQD</div></div>`
+      container.appendChild(el)
+    })
+    document.getElementById('total').innerText=total.toLocaleString()+' IQD'
+  }
+  checkoutList.innerHTML=''
+  if(order.length===0){
+    checkoutList.innerHTML=`<p style="color:var(--muted);font-size:13px">السلة فارغة - أضف أطباقاً من اليمين</p>`
+    checkoutTotalEl.innerText='0 IQD'
+  } else {
+    let total=0
+    order.forEach(o=>{
+      total+=o.price*o.qty
+      const wrapper=document.createElement('div')
+      wrapper.style.display='flex'
+      wrapper.style.justifyContent='space-between'
+      wrapper.style.padding='8px 0'
+      wrapper.style.borderBottom='1px dashed rgba(15,23,42,0.04)'
+      const left=document.createElement('div'); left.style.display='flex'; left.style.flexDirection='column'
+      const title=document.createElement('strong'); title.innerText=o.name
+      const noteText=document.createElement('div'); noteText.style.fontSize='13px'; noteText.style.color='var(--muted)'; noteText.innerText=o.note?`ملاحظة: ${o.note}`:''
+      const qtyControls=document.createElement('div'); qtyControls.className='cart-item-controls'
+      const minus=document.createElement('button'); minus.className='btn-ghost'; minus.innerText='-'; minus.onclick=()=>{decreaseQty(o.id)}
+      const input=document.createElement('input'); input.className='qty-input'; input.type='number'; input.min=1; input.value=o.qty; input.onchange=(e)=>{setQty(o.id,parseInt(e.target.value)||1)}
+      const plus=document.createElement('button'); plus.className='btn-ghost'; plus.innerText='+'; plus.onclick=()=>{increaseQty(o.id)}
+      qtyControls.appendChild(minus); qtyControls.appendChild(input); qtyControls.appendChild(plus)
+      left.appendChild(title); left.appendChild(noteText); left.appendChild(qtyControls)
+      const right=document.createElement('div'); right.style.textAlign='left'; right.style.minWidth='140px'
+      const priceLine=document.createElement('div'); priceLine.innerText=(o.price*o.qty).toLocaleString()+' IQD'
+      const actions=document.createElement('div'); actions.style.marginTop='8px'
+      const noteBtn=document.createElement('button'); noteBtn.className='note-btn'; noteBtn.innerText='ملاحظة'; noteBtn.onclick=()=>{openNoteModal(o.id)}
+      const removeBtn=document.createElement('button'); removeBtn.className='remove-btn'; removeBtn.innerText='حذف'; removeBtn.onclick=()=>{removeItem(o.id)}
+      actions.appendChild(noteBtn); actions.appendChild(removeBtn)
+      right.appendChild(priceLine); right.appendChild(actions)
+
+      wrapper.appendChild(left); wrapper.appendChild(right)
+      checkoutList.appendChild(wrapper)
+    })
+    checkoutTotalEl.innerText=total.toLocaleString()+' IQD'
+  }
+  const count = order.reduce((s,o)=>s+o.qty,0)
+  cartCount.innerText = count
+  cartCountSide.innerText = count
+  saveOrderToStorage()
+}
+function increaseQty(id){ const i=order.find(o=>o.id===id); if(i){ i.qty++; renderOrder() } }
+function decreaseQty(id){ const i=order.find(o=>o.id===id); if(i){ i.qty--; if(i.qty<=0){ order.splice(order.indexOf(i),1) } renderOrder() } }
+function setQty(id,val){ if(val<1) val=1; const i=order.find(o=>o.id===id); if(i){ i.qty=val; renderOrder() } }
+function removeItem(id){ const i=order.find(o=>o.id===id); if(i){ order.splice(order.indexOf(i),1); renderOrder() } }
+function openNoteModal(id){ noteTargetId=id; const it=order.find(o=>o.id===id); noteInput.value=it?it.note:''; noteTitle.innerText=`ملاحظة: ${it?it.name:''}`; noteModal.classList.add('open') }
+document.getElementById('cancelNote').addEventListener('click',()=>{ noteModal.classList.remove('open'); noteTargetId=null })
+document.getElementById('saveNote').addEventListener('click',()=>{
+  if(noteTargetId===null){ noteModal.classList.remove('open'); return }
+  const it=order.find(o=>o.id===noteTargetId); if(it){ it.note=noteInput.value.trim(); renderOrder() }
+  noteModal.classList.remove('open'); noteTargetId=null
+})
+
+cartBtn.addEventListener('click', openCheckoutModal)
+cartBtnSide.addEventListener('click', openCheckoutModal)
+openCheckoutFromSidebar.addEventListener('click', openCheckoutModal)
+closeCheckout.addEventListener('click', ()=>{ checkoutModal.classList.remove('open'); checkoutModal.setAttribute('aria-hidden','true') })
+document.getElementById('cancelCheckout').addEventListener('click', ()=>{ checkoutModal.classList.remove('open'); checkoutModal.setAttribute('aria-hidden','true') })
+function openCheckoutModal(){
+  renderOrder()
+  checkoutModal.classList.add('open')
+  checkoutModal.setAttribute('aria-hidden','false')}
+const sidebarSlide=document.getElementById('sidebarSlide'),panel=document.getElementById('panel')
+document.getElementById('openSide').addEventListener('click',()=>{ panel.classList.add('open'); sidebarSlide.style.display='block' })
+document.getElementById('closeSide').addEventListener('click',closeSidebar)
+function closeSidebar(){ panel.classList.remove('open'); setTimeout(()=>{sidebarSlide.style.display='none'},300) }
+document.addEventListener('click',e=>{ if(e.target===sidebarSlide){ closeSidebar() } })
+document.getElementById('demoMood').addEventListener('click',()=>{
+  document.body.animate([{background:varOr('--bg')},{background:'#faf5ff'},{background:varOr('--bg')}],{duration:1200})
+  const all=document.querySelectorAll('.card .thumb')
+  all.forEach((t,i)=>t.animate([{transform:'rotate('+(i%2?4:-4)+'deg)'},{transform:'rotate(0)'}],{duration:700,delay:i*80}))
+})
+function varOr(name){return getComputedStyle(document.documentElement).getPropertyValue(name) || '#fff'}
+function saveOrderToStorage(){ try{ localStorage.setItem('bf_order', JSON.stringify(order)) }catch(e){} }
+function loadOrderFromStorage(){ try{ const d = JSON.parse(localStorage.getItem('bf_order')||'[]'); if(Array.isArray(d)) order=d; }catch(e){ order=[] } renderOrder() }
+window.addEventListener('beforeunload', saveOrderToStorage)
+loadOrderFromStorage()
+document.getElementById('checkoutForm').addEventListener('submit', e=>{
+  e.preventDefault()
+  const name=document.getElementById('custName').value.trim()
+  const phone=document.getElementById('custPhone').value.trim()
+  const address=document.getElementById('custAddress').value.trim()
+  if(!name){alert('يرجى إدخال الاسم الكامل');return}
+  const phoneDigits=phone.replace(/\D/g,'')
+  if(!/^07\d{9}$/.test(phoneDigits) && !/^7\d{9}$/.test(phoneDigits) && !/^9647\d{9}$/.test(phoneDigits)){alert('يرجى إدخال رقم هاتف عراقي صحيح');return}
+  if(address.split(/\s+/).length<2){alert('يرجى كتابة عنوان لا يقل عن كلمتين');return}
+    const pad=n=>n<10?'0'+n:n,
+    fmt=d=>{
+      const tz=new Date(d.toLocaleString('en-US',{timeZone:'Asia/Baghdad'}));
+      let h=tz.getHours(), ampm=h>=12?'PM':'AM';
+      h=h%12||12;
+      return `${String(tz.getFullYear()).slice(-2)}/${pad(tz.getMonth()+1)}/${pad(tz.getDate())} - ${pad(h)}:${pad(tz.getMinutes())}:${pad(tz.getSeconds())} ${ampm}`;
+    };
+  let msgLines=fmt(new Date())+'\n=================================\n'
+  msgLines+=`الاسم: ${name}\nالرقم: ${phone}\nالعنوان: ${address}\n---------------------------------------------\n`
+  msgLines+='الطلب والكمية - السعر - المجموع - ملاحظة\n'
+  msgLines+=order.map(o=>{
+  const noteText=o.note?` ${o.note}`:''
+  return `${o.name} x${o.qty} - ${o.price.toLocaleString()} IQD - ${(o.price*o.qty).toLocaleString()} IQD - ${noteText}`
+  }).join('\n')
+  const total=order.reduce((s,o)=>s+o.price*o.qty,0).toLocaleString()
+  msgLines+=`\n---------------------------------------------\nالمجموع الكلي: ${total} IQD\n=================================`
+  const waNumber='+9647855321655'
+  const waUrl=`https://wa.me/${waNumber.replace('+','')}?text=${encodeURIComponent(msgLines)}`
+  window.open(waUrl,'_blank')
+  checkoutModal.classList.remove('open')
+  checkoutModal.setAttribute('aria-hidden','true')
+})
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ checkoutModal.classList.remove('open'); noteModal.classList.remove('open') } })
+document.querySelectorAll('.card-actions').forEach((el, i) => {
+  el.style.setProperty('--delay', `${i * 0.2}s`);
+});
+const items = document.querySelectorAll('.menu-item');
+items.forEach((item, index) => {
+  setTimeout(() => {
+    item.classList.add('show');
+  }, index * 150);
+});
+
+</script>
+</body>
+</html>
