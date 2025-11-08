@@ -53,7 +53,20 @@ html,body{height:100%;margin:0;font-family:"Cairo",sans-serif;background:linear-
 .card p{margin:0;color:var(--muted);font-size:13px}
 .price{position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.95);padding:6px 10px;border-radius:10px;font-weight:800;border:1px solid rgba(107,33,168,0.06)}
 .ribbon{position:absolute;right:-36px;top:12px;transform:rotate(45deg);background:linear-gradient(90deg,var(--accent),var(--main));color:#fff;padding:6px 46px;font-weight:800}
-.card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+/*.card-actions{display:flex;justify-content:space-between;align-items:center;margin-top:12px}*/
+@keyframes slideUpFade {
+  0% {opacity: 0;transform: translateY(20px);}
+  100% {opacity: 1;transform: translateY(0);}
+}
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  opacity: 0;
+  animation: slideUpFade 0.5s forwards;
+}
+
 .btn-ghost{padding:8px 10px;border-radius:10px;/*border:1px dashed rgba(107,33,168,0.18);*/background:transparent}
 .modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:18px;visibility:hidden;opacity:0;transition:all .22s;z-index:60}
 .modal.open{visibility:visible;opacity:1}
@@ -78,10 +91,11 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
 .dark{--bg:#0f1724;--text:#f3f4f6;--muted:#9aa6b2;--glass-bg: rgba(255,255,255,0.03);--glass-border: rgba(255,255,255,0.06)}
 .form-row-1 {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 .form-group-1 {
   flex: 1;
+  max-width: 80%;
 }
 .logo-1 {
   width: 80px;height: 80px;
@@ -90,6 +104,7 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
   background-position: center;
   border-radius: 50%;
 }
+
 @media (max-width: 480px) {
   .cart-modal,
   .cart-modal .modal-content {
@@ -215,8 +230,8 @@ textarea{resize:vertical;min-height:80px,max-width: 80%;}
                 <input type="tel" id="custPhone" class="input" placeholder="مثال: 07718009200 " required="" style="max-width: 60%;">
               </div>
             </div>
-            <div class="form-group"><label>العنوان الكامل</label><textarea id="custAddress" class="input" placeholder="مثال: المنصور بغداد" required="" style="max-width: 80%;"></textarea></div>
-            <div class="form-group"><label>ملاحظة عامة للطلب (اختياري)</label><textarea id="orderNote" class="input" placeholder="مثال: لا تضع بصل"required="" style="max-width: 80%;"></textarea></div>
+            <div class="form-group"><label>العنوان الكامل</label><textarea id="custAddress" class="input" placeholder="مثال: المنصور بغداد" required=""></textarea></div>
+            <div class="form-group"><label>ملاحظة عامة للطلب (اختياري)</label><textarea id="orderNote" class="input" placeholder="مثال: لا تضع بصل"></textarea></div>
           </div>
           <div class="footer-actions" style="margin-top:10px">
             <button type="button" class="btn-ghost" id="cancelCheckout">إلغاء</button>
@@ -494,6 +509,8 @@ document.getElementById('checkoutForm').addEventListener('submit', e=>{
   checkoutModal.setAttribute('aria-hidden','true')
 })
 document.addEventListener('keydown', (e)=>{ if(e.key==='Escape'){ checkoutModal.classList.remove('open'); noteModal.classList.remove('open') } })
+document.querySelectorAll('.card-actions').forEach((el,i)=>{el.style.animationDelay=`${i*0.2}s`;});
+
 </script>
 </body>
 </html>
